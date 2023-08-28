@@ -37,18 +37,20 @@ export default function RegisterScreen({ navigation }) {
           source={require("../../../img/background.png")}
           style={s.bgImg}
         >
+            <KeyboardAvoidingView
+              behavior={Platform.OS == "ios" ? "padding" : "height"}
+            >
           <View style={s.form}>
             <Image
               source={require("../../../img/add_photo.png")}
               style={s.avatarHolder}
             />
 
-            <KeyboardAvoidingView
-              behavior={Platform.OS == "ios" ? "padding" : "height"}
-            >
               <View>
                 <Text style={s.title}>Реєстрація</Text>
               </View>
+
+          
 
               <View style={{ marginTop: 33 }}>
                 <TextInput
@@ -78,7 +80,8 @@ export default function RegisterScreen({ navigation }) {
                   secureTextEntry={true}
                 />
               </View>
-            </KeyboardAvoidingView>
+              
+            
             {!isKeyboardShow && (
               <View
               // style={isKeyboardShow ? { display: "none" } : { display: "flex" }}
@@ -100,6 +103,7 @@ export default function RegisterScreen({ navigation }) {
               </View>
             )}
           </View>
+          </KeyboardAvoidingView>
         </ImageBackground>
       </View>
     </TouchableWithoutFeedback>

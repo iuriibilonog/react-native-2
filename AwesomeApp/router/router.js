@@ -51,6 +51,7 @@ const renderTabsOrder = (currentScreen, onTabPress) => {
           name="ProfileScreen"
           component={ProfileScreen}
           options={{
+            headerShown: false,
             tabBarIcon: ({ tintColor, image, focused }) => {
               image =
                 currentScreen === "ProfileScreen"
@@ -72,9 +73,7 @@ const renderTabsOrder = (currentScreen, onTabPress) => {
           component={AddScreen}
           options={{
             tabBarIcon: ({ tintColor, image, focused }) => {
-              image = focused
-                ? require("../img/trash.png")
-                : currentScreen !== "ProfileScreen"
+              image = currentScreen !== "ProfileScreen"
                 ? require("../img/new.png")
                 : require("../img/add_non_active.png");
               return (
@@ -133,11 +132,10 @@ const renderTabsOrder = (currentScreen, onTabPress) => {
                 />
               </Pressable>
             ),
+            tabBarStyle: { display: 'none' },
 
             tabBarIcon: ({ tintColor, image, focused }) => {
-              image = focused
-                ? require("../img/trash.png")
-                : currentScreen !== "ProfileScreen"
+              image = currentScreen !== "ProfileScreen"
                 ? require("../img/new.png")
                 : require("../img/add_non_active.png");
 
@@ -149,6 +147,7 @@ const renderTabsOrder = (currentScreen, onTabPress) => {
                 </View>
               );
             },
+            
           })}
         >
           {(props) => <AddScreen {...props} onTabPress={onTabPress} />}
@@ -158,6 +157,7 @@ const renderTabsOrder = (currentScreen, onTabPress) => {
           name="ProfileScreen"
           component={ProfileScreen}
           options={{
+            headerShown: false,
             tabBarButton: (props) =>
               currentScreen === "AddScreen" ? null : <Pressable {...props} />,
             tabBarIcon: ({ tintColor, image, focused }) => {
@@ -204,6 +204,7 @@ export const useAllRoutes = (isAuth, currentScreen) => {
   } else {
     return (
       <AuthStack.Navigator>
+        
         <AuthStack.Screen
           name="Register"
           component={Register}
@@ -215,6 +216,7 @@ export const useAllRoutes = (isAuth, currentScreen) => {
           component={Login}
           options={{ headerShown: false }}
         />
+        
       </AuthStack.Navigator>
     );
   }
