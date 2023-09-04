@@ -34,7 +34,7 @@ const AddScreen = ({ navigation, onTabPress }) => {
     })();
 
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
-    setIsLoading(false)
+    setIsLoading(false);
     return () => {
       BackHandler.removeEventListener(
         "hardwareBackPress",
@@ -42,8 +42,6 @@ const AddScreen = ({ navigation, onTabPress }) => {
       );
     };
   }, []);
-
-  
 
   function handleBackButtonClick() {
     const canGoBack = navigation.canGoBack();
@@ -57,13 +55,12 @@ const AddScreen = ({ navigation, onTabPress }) => {
 
   const takePhoto = async () => {
     setIsPhotoOnProcess(true);
-    
-      const pic = await camera.takePictureAsync();
-      await MediaLibrary.createAssetAsync(pic.uri);
-      setIsPhotoOnProcess(false);
-     
-      setPhoto(pic.uri);
-    
+
+    const pic = await camera.takePictureAsync();
+    await MediaLibrary.createAssetAsync(pic.uri);
+    setIsPhotoOnProcess(false);
+
+    setPhoto(pic.uri);
   };
 
   const pickImage = async () => {
@@ -76,14 +73,16 @@ const AddScreen = ({ navigation, onTabPress }) => {
     });
 
     if (!result.canceled) {
-      console.log('first', result?.assets[0]?.uri)
+      console.log("first", result?.assets[0]?.uri);
       setPhoto(result?.assets[0]?.uri);
     }
   };
 
   const toggleCameraType = () => {
-    type === CameraType.back ? setType(CameraType.front) : setType(CameraType.back)
-  }
+    type === CameraType.back
+      ? setType(CameraType.front)
+      : setType(CameraType.back);
+  };
 
   const removePhoto = () => {
     if (photo.length) setPhoto("");
@@ -98,78 +97,70 @@ const AddScreen = ({ navigation, onTabPress }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={s.container}>
-        
-            {photo.length ? (
-              <View style={s.imgWrapper}>
-                <Image
-                  source={{ uri: photo }}
-                  style={{ width: "100%", height: "100%" }}
-                />
+        {photo.length ? (
+          <View style={s.imgWrapper}>
+            <Image
+              source={{ uri: photo }}
+              style={{ width: "100%", height: "100%" }}
+            />
+          </View>
+        ) : (
+          <Camera style={s.imgWrapper} ref={setCamera} type={type}>
+            {isPhotoOnProcess ? (
+              <View>
+                <ActivityIndicator />
               </View>
             ) : (
-              <Camera
-                style={s.imgWrapper}
-                ref={setCamera}
-                type={type}
-              >
-                {isPhotoOnProcess ? (
-                  <View>
-                    <ActivityIndicator />
-                  </View>
-                ) : (
-                  <View style={s.camControls}>
-                    
-                    <TouchableOpacity onPress={pickImage}>
-                    <Image
-                     style={s.camControlItem}
-                      source={require("../../../img/galery.png")}
-                    />
-                    </TouchableOpacity>
-                      <TouchableOpacity onPress={takePhoto}>
-                    <Image
-                      style={s.camControlItem}
-                      source={require("../../../img/cam_transparent.png")}
-                    />
-                     </TouchableOpacity>
-                     <TouchableOpacity onPress={toggleCameraType}>
-                    <Image
-                      source={require("../../../img/change_cam.png")}
-                    />
-                    </TouchableOpacity>
-
-                    </View>
-                )}
-              </Camera>
-            )}
-
-            <TouchableOpacity onPress={pickImage}>
-              {photo.length ? <Text style={s.loadImgText}>Редагувати фото</Text> : <Text style={s.loadImgText}>Завантажте фото</Text> }
-              
-            </TouchableOpacity>
-            <KeyboardAvoidingView
-              behavior={Platform.OS === "ios" ? "padding" : "height"}
-            >
-              <View style={s.form}>
-                <TextInput placeholder={"Назва"} style={s.inputName} />
-                <View style={s.placeWrapper}>
-                <Image
-                      style={s.iconPlace}
-                      source={require("../../../img/map-pin.png")}
-                    />
-                <TextInput placeholder={"Місцевість"} style={s.inputPlace} />
-                </View>
+              <View style={s.camControls}>
+                <TouchableOpacity onPress={pickImage}>
+                  <Image
+                    style={s.camControlItem}
+                    source={require("../../../img/galery.png")}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={takePhoto}>
+                  <Image
+                    style={s.camControlItem}
+                    source={require("../../../img/cam_transparent.png")}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={toggleCameraType}>
+                  <Image source={require("../../../img/change_cam.png")} />
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity style={s.submitDisable}>
-                <Text style={s.submitTextDisable}>Опублікувати</Text>
-              </TouchableOpacity>
-            </KeyboardAvoidingView>
-            <View style={s.trash}>
-              <TouchableOpacity onPress={removePhoto}>
-                <Image source={require("../../../img/trash.png")} />
-              </TouchableOpacity>
+            )}
+          </Camera>
+        )}
+
+        <TouchableOpacity onPress={pickImage}>
+          {photo.length ? (
+            <Text style={s.loadImgText}>Редагувати фото</Text>
+          ) : (
+            <Text style={s.loadImgText}>Завантажте фото</Text>
+          )}
+        </TouchableOpacity>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <View style={s.form}>
+            <TextInput placeholder={"Назва"} style={s.inputName} />
+            <View style={s.placeWrapper}>
+              <Image
+                style={s.iconPlace}
+                source={require("../../../img/map-pin.png")}
+              />
+              <TextInput placeholder={"Місцевість"} style={s.inputPlace} />
             </View>
-          
-        
+          </View>
+          <TouchableOpacity style={s.submitDisable}>
+            <Text style={s.submitTextDisable}>Опублікувати</Text>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
+        <View style={s.trash}>
+          <TouchableOpacity onPress={removePhoto}>
+            <Image source={require("../../../img/trash.png")} />
+          </TouchableOpacity>
+        </View>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -212,11 +203,11 @@ const s = StyleSheet.create({
   inputPlace: {
     paddingTop: 16,
     paddingBottom: 16,
-    width: '100%',
+    width: "100%",
   },
   placeWrapper: {
     flexDirection: "row",
-    alignItems: 'center',
+    alignItems: "center",
     borderBottomWidth: 1,
     borderBottomColor: "#E8E8E8",
   },
@@ -251,18 +242,16 @@ const s = StyleSheet.create({
   },
   camControls: {
     flex: 1,
-    width: '100%',
+    width: "100%",
     paddingHorizontal: 16,
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "center",
     marginBottom: 10,
-  
-  }, 
+  },
   camControlItem: {
     marginRight: 15,
-  }
-
+  },
 });
 
 export default AddScreen;

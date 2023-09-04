@@ -9,6 +9,7 @@ import Register from "../screens/Auth/RegisterScreen/RegisterScreen";
 import PostsScreen from "../screens/Main/PostsScreen/PostsScreen";
 import AddScreen from "../screens/Main/AddPostScreen/AddPostScreen";
 import ProfileScreen from "../screens/Main/ProfileScreen/ProfileScreen";
+import ProfileRoutes from "./nestedNavigation/nestedProfile";
 import logOut from "../img/log-out1.png";
 
 const AuthStack = createStackNavigator(); // указывает на группу навигаторов
@@ -48,10 +49,11 @@ const renderTabsOrder = (currentScreen, onTabPress) => {
         />
 
         <MainStack.Screen
-          name="ProfileScreen"
-          component={ProfileScreen}
+          name="ProfileRoutes"
+          component={ProfileRoutes}
           options={{
             headerShown: false,
+            // tabBarStyle: { display: "none" },
             tabBarIcon: ({ tintColor, image, focused }) => {
               image =
                 currentScreen === "ProfileScreen"
@@ -73,9 +75,10 @@ const renderTabsOrder = (currentScreen, onTabPress) => {
           component={AddScreen}
           options={{
             tabBarIcon: ({ tintColor, image, focused }) => {
-              image = currentScreen !== "ProfileScreen"
-                ? require("../img/new.png")
-                : require("../img/add_non_active.png");
+              image =
+                currentScreen !== "ProfileScreen"
+                  ? require("../img/new.png")
+                  : require("../img/add_non_active.png");
               return (
                 <View onStartShouldSetResponder={() => onTabPress("AddScreen")}>
                   <Image source={image} />
@@ -132,12 +135,13 @@ const renderTabsOrder = (currentScreen, onTabPress) => {
                 />
               </Pressable>
             ),
-            tabBarStyle: { display: 'none' },
+            tabBarStyle: { display: "none" },
 
             tabBarIcon: ({ tintColor, image, focused }) => {
-              image = currentScreen !== "ProfileScreen"
-                ? require("../img/new.png")
-                : require("../img/add_non_active.png");
+              image =
+                currentScreen !== "ProfileScreen"
+                  ? require("../img/new.png")
+                  : require("../img/add_non_active.png");
 
               return (
                 <View
@@ -147,15 +151,14 @@ const renderTabsOrder = (currentScreen, onTabPress) => {
                 </View>
               );
             },
-            
           })}
         >
           {(props) => <AddScreen {...props} onTabPress={onTabPress} />}
         </MainStack.Screen>
 
         <MainStack.Screen
-          name="ProfileScreen"
-          component={ProfileScreen}
+          name="ProfileRoutes"
+          component={ProfileRoutes}
           options={{
             headerShown: false,
             tabBarButton: (props) =>
@@ -204,7 +207,6 @@ export const useAllRoutes = (isAuth, currentScreen) => {
   } else {
     return (
       <AuthStack.Navigator>
-        
         <AuthStack.Screen
           name="Register"
           component={Register}
@@ -216,7 +218,6 @@ export const useAllRoutes = (isAuth, currentScreen) => {
           component={Login}
           options={{ headerShown: false }}
         />
-        
       </AuthStack.Navigator>
     );
   }

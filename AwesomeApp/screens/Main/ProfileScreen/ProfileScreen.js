@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import PostCard from '../../../components/PostCard'
+import PostCard from "../../../components/PostCard";
 
 const ProfileScreen = ({ navigation }) => {
   const [photo, setPhoto] = useState("");
@@ -24,8 +24,50 @@ const ProfileScreen = ({ navigation }) => {
       title: "lis",
       uri: "https://plus.unsplash.com/premium_photo-1664298270691-6aa217e5b1a5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
       likes: "32",
-      comments: "0",
+      comments: "3",
       place: "Ukraine",
+      commentsArr: [
+        {
+          id: 10,
+          text: "Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!",
+          authorId: "12347",
+          authorAvatar:
+            "https://images.vexels.com/media/users/3/158067/isolated/preview/c7d1cdffff99983cf006d81639b25ca0-long-wavy-hair-woman-avatar.png",
+          date: "29.08.2023",
+        },
+        {
+          id: 11,
+          text: "A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.",
+          authorId: "12345",
+          authorAvatar:
+            "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile.png",
+          date: "29.08.2023",
+        },
+        {
+          id: 12,
+          text: "Thank you! That was very helpful!",
+          authorId: "12347",
+          authorAvatar:
+            "https://images.vexels.com/media/users/3/158067/isolated/preview/c7d1cdffff99983cf006d81639b25ca0-long-wavy-hair-woman-avatar.png",
+          date: "29.08.2023",
+        },
+        {
+          id: 13,
+          text: "A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.",
+          authorId: "12345",
+          authorAvatar:
+            "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile.png",
+          date: "29.08.2023",
+        },
+        {
+          id: 14,
+          text: "Thank you! That was very helpful!",
+          authorId: "12347",
+          authorAvatar:
+            "https://images.vexels.com/media/users/3/158067/isolated/preview/c7d1cdffff99983cf006d81639b25ca0-long-wavy-hair-woman-avatar.png",
+          date: "29.08.2023",
+        },
+      ],
     },
     {
       id: "2",
@@ -93,10 +135,9 @@ const ProfileScreen = ({ navigation }) => {
     },
   ];
 
-
   const removePhoto = () => {
-    setPhoto('')
-  }
+    setPhoto("");
+  };
 
   const pickImage = async () => {
     (async () => {
@@ -105,7 +146,7 @@ const ProfileScreen = ({ navigation }) => {
 
       setHasPermission(status === "granted");
     })();
-    if (hasPermission === false) return false
+    if (hasPermission === false) return false;
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -115,19 +156,17 @@ const ProfileScreen = ({ navigation }) => {
     });
 
     if (!result.canceled) {
-      
       setPhoto(result?.assets[0]?.uri);
     }
   };
 
   return (
-      <View style={s.container}>
-    <ScrollView>
-        <ImageBackground
-          source={require("../../../img/background.png")}
-          style={s.bgImg}
-        >
-          
+    <View style={s.container}>
+      <ImageBackground
+        source={require("../../../img/background.png")}
+        style={s.bgImg}
+      >
+        <ScrollView>
           <View style={s.contentWrapper}>
             <TouchableOpacity>
               <Image
@@ -140,18 +179,13 @@ const ProfileScreen = ({ navigation }) => {
                 style={s.avatarHolder}
                 // onPress={handleUploadAvatar}
               >
-                <Image source={{uri: photo}} style={s.avatarPic}/>
+                <Image source={{ uri: photo }} style={s.avatarPic} />
                 <TouchableOpacity style={s.discardIcon} onPress={removePhoto}>
-
-                <Image source={require('../../../img/add_icon.png')} />
+                  <Image source={require("../../../img/add_icon.png")} />
                 </TouchableOpacity>
-
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity
-                style={s.avatarHolder}
-                onPress={pickImage}
-              >
+              <TouchableOpacity style={s.avatarHolder} onPress={pickImage}>
                 <Image source={require("../../../img/add_photo.png")} />
               </TouchableOpacity>
             )}
@@ -159,24 +193,23 @@ const ProfileScreen = ({ navigation }) => {
             <View>
               <Text style={s.profileTitle}>Natali Romanova</Text>
             </View>
-            {data.length === 0 ? 
-          <View style={s.noData}>
-            <TouchableOpacity onPress={() => navigation.navigate('AddScreen')}>
-              <Text style={s.noDataText}>Створити перший пост</Text>
-            </TouchableOpacity>
+            {data.length === 0 ? (
+              <View style={s.noData}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("AddScreen")}
+                >
+                  <Text style={s.noDataText}>Створити перший пост</Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View style={s.list}>
+                <PostCard data={data} navigation={navigation} />
+              </View>
+            )}
           </View>
-          : 
-            <View style={s.list}>
-              
-                <PostCard data={data}/>
-                
-              
-            </View>
-          }
-          </View>
-        </ImageBackground>
-    </ScrollView>
-      </View>
+        </ScrollView>
+      </ImageBackground>
+    </View>
   );
 };
 
@@ -185,30 +218,28 @@ const s = StyleSheet.create({
     flex: 1,
 
     backgroundColor: "#fff",
-   height: Dimensions.get("window").height,
+    height: Dimensions.get("window").height,
   },
   bgImg: {
-    // flex: 1,
-    resizeMode: "cover",
-    
+    resizeMode: "contain",
+
     width: Dimensions.get("window").width,
-    // height: Dimensions.get("window").height,
-    // height: '100%'
+    height: Dimensions.get("window").height,
+    // height: "100%",
   },
   noData: {
     // justifyContent: "center",
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 150,
   },
   noDataText: {
     fontSize: 20,
     fontWeight: "500",
     color: "#212121",
-    textDecorationLine: 'underline',
+    textDecorationLine: "underline",
   },
   contentWrapper: {
     marginTop: 147,
-    position: "relative",
     backgroundColor: "#fff",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
@@ -223,14 +254,14 @@ const s = StyleSheet.create({
     top: -60,
   },
   avatarPic: {
-    width: "100%", 
+    width: "100%",
     height: "100%",
     borderRadius: 16,
   },
   discardIcon: {
-    position: 'absolute',
+    position: "absolute",
     top: 76,
-    left: 102
+    left: 102,
   },
   logOut: {
     marginLeft: "auto",
@@ -246,7 +277,6 @@ const s = StyleSheet.create({
   list: {
     marginTop: 33,
   },
-  
 });
 
 export default ProfileScreen;

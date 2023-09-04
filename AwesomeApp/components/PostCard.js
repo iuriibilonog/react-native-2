@@ -1,26 +1,29 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 
-const PostCard = ({ data }) => {
+const PostCard = ({ data, navigation }) => {
   return (
     data.length > 0 &&
     data.map((item) => (
       <View style={s.item} key={item.id}>
-        <Image source={{ uri: item.uri }} style={s.itemImg} />
-        <Text style={s.itemTitle}>{item.title}</Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("OnePostScreen", { data: item })}
+        >
+          <Image source={{ uri: item.uri }} style={s.itemImg} />
+          <Text style={s.itemTitle}>{item.title}</Text>
+        </TouchableOpacity>
         <View style={s.itemDataWrapper}>
-            {parseInt(item.comments) !== 0 ? (
-          <View style={s.itemComments}>
-              
-                <Image source={require("../img/comments.png")} />
-                <Text style={s.dataCount}>{item.comments}</Text>
-              </View>
-            ) : (
-              <View style={s.itemComments}>
-                <Image source={require("../img/comments_empty.png")} />
-                <Text style={s.dataCount}>{item.comments}</Text>
-                </View>
-            )}
-          
+          {parseInt(item.comments) !== 0 ? (
+            <View style={s.itemComments}>
+              <Image source={require("../img/comments.png")} />
+              <Text style={s.dataCount}>{item.comments}</Text>
+            </View>
+          ) : (
+            <View style={s.itemComments}>
+              <Image source={require("../img/comments_empty.png")} />
+              <Text style={s.dataCount}>{item.comments}</Text>
+            </View>
+          )}
+
           <View style={s.itemLikes}>
             <Image source={require("../img/thumbs-up.png")} />
             <Text style={s.dataCount}>{item.likes}</Text>
